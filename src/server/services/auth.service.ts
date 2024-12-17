@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { isValid } from "date-fns";
 import dotenv from "dotenv";
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import pool from "../config/database.ts";
 
@@ -89,4 +90,20 @@ const loginUser = async ({ userId, password }: LoginRequest) => {
   return { token, user: { userId: user.user_id, id: user.id } };
 };
 
-export { loginUser, registerUser };
+const logoutUser = async (req: Request, res: Response) => {
+  try {
+    // Clear the JWT stored in the cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+      sameSite: "strict", // Add sameSite for security
+    });
+
+    return res.status(200).json({ message: "Successfully logged out." });
+  } catch (error) {
+    console.error("Logout error:", error);
+    throw new Error("Server error during logout.");
+  }
+};
+
+export { loginUser, logoutUser, registerUser };

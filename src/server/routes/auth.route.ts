@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { body } from "express-validator/lib/middlewares/validation-chain-builders";
-import { login, register } from "../controller/auth.controller";
+import { login, logout, register } from "../controller/auth.controller";
 import validateRequest from "../middleware/validateRequest";
 
 const router = Router();
@@ -37,5 +37,7 @@ router.post(
   validateRequest,
   login
 );
+
+router.post("/v1/logout", logout);
 
 export default router;
