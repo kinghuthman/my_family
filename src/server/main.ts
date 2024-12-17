@@ -1,8 +1,8 @@
+import dotenv from "dotenv";
 import express from "express";
 import ViteExpress from "vite-express";
 import pool from "./config/database.js";
-
-import dotenv from "dotenv";
+import authRoutes from "./routes/auth.route.js";
 dotenv.config();
 
 const app = express();
@@ -26,6 +26,8 @@ app.get("/api/test-db", async (req, res) => {
 app.get("/hello", (_, res) => {
   res.send("Hello Vite + React + TypeScript!");
 });
+
+app.use("/api/auth", authRoutes);
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
