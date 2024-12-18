@@ -40,3 +40,6 @@
 - crash alerts
 - document database setup
 - swagger/openapi
+- cleanup types
+- sql injections
+- move queries to db folder??
