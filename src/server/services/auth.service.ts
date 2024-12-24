@@ -12,7 +12,7 @@ export type UserRegistration = {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  userId: string;
+  username: string;
   password: string;
 };
 export type UserDetails = {
@@ -21,7 +21,7 @@ export type UserDetails = {
   lastName: string;
   // todo: correct type
   dateOfBirth: string;
-  user_id: string;
+  username: string;
   password: string;
   id: string;
   // todo: correct type
@@ -29,12 +29,12 @@ export type UserDetails = {
 };
 
 export type LoginRequest = {
-  userId: string;
+  username: string;
   password: string;
 };
 
 const registerUser = async ({
-  userId,
+  username,
   firstName,
   lastName,
   email,
@@ -49,9 +49,9 @@ const registerUser = async ({
       throw new Error("Invalid date format. Use YYYY-MM-DD.");
     }
     const query =
-      "INSERT INTO users (user_id, first_name, last_name, email, password, date_of_birth) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, user_id, email, created_at";
+      "INSERT INTO users (username, first_name, last_name, email, password, date_of_birth) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, username, email, created_at";
     const values = [
-      userId,
+      username,
       firstName,
       lastName,
       email,
@@ -68,9 +68,9 @@ const registerUser = async ({
   }
 };
 
-const loginUser = async ({ userId, password }: LoginRequest) => {
-  const query = "SELECT * FROM users WHERE user_id = $1";
-  const { rows } = await pool.query(query, [userId]);
+const loginUser = async ({ username, password }: LoginRequest) => {
+  const query = "SELECT * FROM users WHERE username = $1";
+  const { rows } = await pool.query(query, [username]);
 
   if (rows.length === 0) throw new Error("User not found");
 
@@ -80,14 +80,14 @@ const loginUser = async ({ userId, password }: LoginRequest) => {
   if (!isPasswordValid) throw new Error("Invalid password");
 
   const token = jwt.sign(
-    { id: user.id, userId: user.user_id },
+    { id: user.id, username: user.username },
     process.env.JWT_SECRET as string,
     {
       expiresIn: process.env.JWT_EXPIRES_IN,
     }
   );
   console.log(user);
-  return { token, user: { userId: user.user_id, id: user.id } };
+  return { token, user: { username: user.username, id: user.id } };
 };
 
 const logoutUser = async (req: Request, res: Response) => {

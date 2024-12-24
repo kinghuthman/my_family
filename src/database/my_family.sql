@@ -1,7 +1,7 @@
 -- users table
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  -- Automatically generates a UUID
-    user_id VARCHAR(50) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -16,6 +16,7 @@ CREATE TABLE connections (
     connected_user_id UUID NOT NULL REFERENCES users(id),
     relation_type VARCHAR(50) NOT NULL, -- e.g., "nuclear", "extended", "friend"
     connection_type VARCHAR(50) NOT NULL, -- e.g., "husband", "coworker", "neighbor"
+	status VARCHAR(50) DEFAULT 'pending', -- "pending", "accepted", "rejected"
     permissions JSONB DEFAULT '{}', -- Store custom visibility rules (optional)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -14,9 +14,9 @@ router.post(
     body("password")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long."),
-    body("userId")
+    body("username")
       .isLength({ min: 3 })
-      .withMessage("User ID must be at least 3 characters long."),
+      .withMessage("Username must be at least 3 characters long."),
     body("firstName").notEmpty().withMessage("First name is required."),
     body("lastName").notEmpty().withMessage("Last name is required."),
     body("dateOfBirth")
@@ -31,13 +31,13 @@ router.post(
 router.post(
   "/v1/login",
   [
-    body("userId").notEmpty().withMessage("User ID is required."),
+    body("username").notEmpty().withMessage("Username is required."),
     body("password").notEmpty().withMessage("Password is required."),
   ],
   validateRequest,
   login
 );
 
-router.post("/v1/logout", logout);
+router.post("/v1/logout", validateRequest, logout);
 
 export default router;

@@ -35,6 +35,7 @@
 
 ### Extra
 
+- tests
 - Setup alerts/reminders to update JWT secret/database passwords
 - Setup envvars in production
 - crash alerts

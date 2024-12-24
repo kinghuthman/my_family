@@ -3,12 +3,12 @@ import { loginUser, logoutUser, registerUser } from "../services/auth.service";
 
 const register = async (req: Request, res: Response) => {
   try {
-    const { email, password, userId, lastName, firstName, dateOfBirth } =
+    const { email, password, username, lastName, firstName, dateOfBirth } =
       req.body;
     const user = await registerUser({
       email,
       password,
-      userId,
+      username,
       lastName,
       firstName,
       dateOfBirth,
@@ -21,8 +21,8 @@ const register = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
   try {
-    const { userId, password } = req.body;
-    const result = await loginUser({ userId, password });
+    const { username, password } = req.body;
+    const result = await loginUser({ username, password });
 
     res.cookie("token", result.token, {
       httpOnly: true, // Prevent client-side access
